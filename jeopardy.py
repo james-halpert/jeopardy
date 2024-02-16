@@ -382,7 +382,7 @@ class JeopardyGame:
 
         for category in self.categories:
             with open(os.path.join(self.question_directory, category), "r") as file:
-                self.questions[category] = list(csv.reader(file))
+                self.questions[category] = list(csv.reader(file, delimiter=',', quotechar="'"))
                 print(f"Loaded {len(self.questions[category])} questions for category '{category}'")
 
         # After loading all questions, print the total count for verification
@@ -401,6 +401,7 @@ class JeopardyGame:
         for col, category in enumerate(self.categories):
             self.question_buttons[category] = []
             for row, question_info in enumerate(self.questions[category]):
+                # print(question_info)  # Add this to see the problematic line
                 dollar_amount, question, answer = question_info
                 button = tk.Button(self.game_frame, text=f"${dollar_amount}", bg="blue", fg="white", height=3, width=20, command=lambda c=category, r=row: self.select_question(c, r))
                 button.grid(row=row + 1, column=col, sticky="nsew")
@@ -455,8 +456,8 @@ class JeopardyGame:
         if show_answer:
             self.question_display.config(text=f"Answer: {answer}")
             # Delay displaying the player list for, e.g., 3 seconds (3000 milliseconds)
-            self.root.after(1000, self.display_player_list)  # Adjust the time as needed
-            self.root.after(1000, self.reset_display)  # Ensure this still works as intended
+            self.root.after(2000, self.display_player_list)  # Adjust the time as needed
+            self.root.after(2000, self.reset_display)  # Ensure this still works as intended
         else:
             self.reset_display()
 
@@ -500,10 +501,16 @@ class JeopardyGame:
         tk.Label(settings_window, text="Thank you for playing my game! - Arlen Kirkaldie Jr", fg="blue").grid(row=3, column=0, columnspan=3, sticky="w")
 
     def browse_for_folder(self, entry_widget):
+        # Open a dialog to select a directory
         folder_selected = filedialog.askdirectory()
         if folder_selected:
+            # If a folder is selected, delete any existing content in the entry widget
             entry_widget.delete(0, tk.END)
+            # Insert the selected folder path into the entry widget
             entry_widget.insert(0, folder_selected)
+        # Note: There's no save operation or window closing action here.
+        # The user must explicitly click a "Save" button elsewhere in the UI to apply changes.
+
 
     def save_settings(self, answer_time, question_dir, settings_window):
         try:
