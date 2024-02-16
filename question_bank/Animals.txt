@@ -1,0 +1,5 @@
+100,"Koalas have an extra-long gut to break down poisons in these leaves","Eucalyptus"
+200,"The arrival of foxes in Western Australia in the 1920s was bad news for the quokka, a type of this kangaroo relative.","Wallaby"
+300,"The right or bowhead this gets tangled in fishing nets, which can stunt growth, causing the species to be shorter than its typical 52 feet.","Whale"
+400,"The 2-toed one of these can live up to 20 years, most of it upside down in the canopy of the rainforest.","Sloth"
+500,"When faced with danger, certain ducks, snakes & mammals do this, also called thanatosis.","Play Dead"

@@ -1,0 +1,5 @@
+100,"This beverage is often created from crushed grapes.","Wine"
+200,"This Russian Potato is often served with celery and tomato juice.","Vodka"
+300,"Barrels of this beverage are often associated with pirates of the high-seas.","Rum"
+400,"Derived from the juniper berry, and often used in Vesper's.","Gin"
+500,"The finest versions of this concotion are cut diretly from Agave.","Tequila"

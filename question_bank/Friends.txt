@@ -1,0 +1,5 @@
+100,"This coffee shop is often frequented by the gang.","Central Perk"
+200,"Phebo was once considered as a name for this child of Ross.","Ben"
+300,"Rachel and Chandler once ate this dessert directly off the floor.","Cheesecake"
+400,"Ross's first wife Carol, left him for this woman.","Susan Bunch"
+500,"Monica often steals the TV Guide from this misspelled recipient.","Ms. Chanandeler Bong"

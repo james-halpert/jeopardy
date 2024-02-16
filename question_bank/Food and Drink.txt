@@ -1,0 +1,5 @@
+100,"Sliced apples sauteed in butter are a classic filling for these French pancakes.","Crepes"
+200,"If you’re in Central Asia, ask for shashlik; if you head down to the Middle East, ask for this 2-word skewered meat equivalent.","Shish-Kabob"
+300,"White, black, & green types of this drink all come from the same plant—Camellia sinensis.","Tea"
+400,"Gruyere is a firm, tangy cheese named for a district in this nation.","Switzerland"
+500,"Garbanzo beans commonly go by this name as well.","Chickpeas"

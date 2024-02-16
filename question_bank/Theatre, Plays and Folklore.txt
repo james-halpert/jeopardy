@@ -1,0 +1,5 @@
+100,"The 4 words that complete the line from 'Jack and the Beanstalk,' 'Fee, fi, fo, fum, I smell the…'","Blood of an Englishman"
+200,"Gustave Dore illustrated this feline in the 19th Century","Puss in boots"
+300,"In the Grimms’ version, this creature becomes a prince not from a kiss but when he’s thrown against the wall.","The Princess and the Frog"
+400,"In 1965, at age 20, Helen Mirren played this Eqyptian at the Old Vic.","Cleopatra"
+500,"This actress has the same name as Shakespeare's wife","Anne Hathaway"

@@ -1,0 +1,5 @@
+100,"This city is home to Dunder Mifflin Paper Company.","Scranton"
+200,"Ryan overcooked this item, which caused a visit from the fire department.","Cheesy Pita"
+300,"Jim and this character refer to sisters they have, but are never shown in the series.","Andy"
+400,"Closing an office branch is easy for Robert California, when consuming Spanish Reds and this colored item.","Colombian Whites"
+500,"Jeff Bomondo, the alternate identity of Creed Bratton in Season 9, sells ceramic tile out of this city.","Newark"

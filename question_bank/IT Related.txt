@@ -1,0 +1,5 @@
+100,"Bill Gates said this operating system should never need more than 64kb of memory","Windows"
+200,"Similar to RAM, this module cannot have data written to it.","ROM"
+300,"The Steves of Apple are known as Jobs and this guy","Wozniak"
+400,"This 'Torvals' is a know contributor and creator od this Operating System","Linux"
+500,"POST is an acronym for the startup of microchipped electroic devices and this is its meaning","Power On Self Test"
