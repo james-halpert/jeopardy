@@ -10,3 +10,14 @@ Scoreboard can be toggled with = key
 
 I took the 200k jeopardy archive questions and removed all incomplete categories, organized (3,817) standard jeopardy and (7,141) double jeopardy questions.
 The zip file contains txt files formatted for this game, containing 10,958 questions and answers.
+
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/3716e242-20c3-4052-811d-290e90901f64)
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/69cec1f3-4df1-48b5-a95f-811c8b4b0846)
+
+Award points manually by choosing who got the answer correct first:
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/69b51932-dff6-4559-aa7b-9303025bca3f)
+
+Keep track of the scores with the new scoreboard feature:
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/565c71fb-5973-4027-8143-1e6cf1d1e20d)
+
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/d86e074f-6a1e-4dd8-918f-9bf1a76fb84d)
