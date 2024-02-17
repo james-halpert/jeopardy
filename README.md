@@ -8,8 +8,8 @@ Game over screen declaring a winner now appears at the end of the game.
 Settings for the game may be accessed by pressing the back-tick ~ key
 Scoreboard can be toggled with = key
 
-I took the 200k jeopardy archive questions and removed all incomplete categories, organized (3,817) standard jeopardy and (7,141) double jeopardy questions.
-The zip file contains txt files formatted for this game, containing 10,958 questions and answers.
+I took the 200k jeopardy archive questions and removed all incomplete categories, organized (14,503) standard jeopardy and (13,413) double jeopardy questions.
+The zip file contains txt files formatted for this game, containing 27,916 Categories and 139,580 questions and answers.
 
 ![image](https://github.com/james-halpert/jeopardy/assets/35898814/3716e242-20c3-4052-811d-290e90901f64)
 ![image](https://github.com/james-halpert/jeopardy/assets/35898814/69cec1f3-4df1-48b5-a95f-811c8b4b0846)
