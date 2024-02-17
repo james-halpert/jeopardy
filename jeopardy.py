@@ -275,7 +275,7 @@ class JeopardyGame:
             try:
                 photo_path = self.player_photos[player_name]
                 original_photo = Image.open(photo_path)
-                resized_photo = original_photo.resize((50, 50), Image.Resampling.LANCZOS)
+                resized_photo = original_photo.resize((150, 150), Image.Resampling.LANCZOS)
                 photo_image = ImageTk.PhotoImage(resized_photo)
                 self.photo_images.append(photo_image)  # Store reference to avoid garbage collection
 
@@ -284,7 +284,7 @@ class JeopardyGame:
                 photo_label.grid(row=index, column=0, padx=10, pady=5)
 
                 # Display player's name and score
-                score_label = tk.Label(scoreboard_frame, text=f"{player_name}: ${self.player_scores.get(player_name, 0)}")
+                score_label = tk.Label(scoreboard_frame, text=f"{player_name}: ${self.player_scores.get(player_name, 0)}", font=("Helvetica", 14))
                 score_label.grid(row=index, column=1, padx=10, pady=5)
             except Exception as e:
                 print(f"Error displaying info for {player_name}: {e}")
@@ -382,7 +382,7 @@ class JeopardyGame:
 
         for category in self.categories:
             with open(os.path.join(self.question_directory, category), "r") as file:
-                self.questions[category] = list(csv.reader(file, delimiter=',', quotechar="'"))
+                self.questions[category] = list(csv.reader(file))
                 print(f"Loaded {len(self.questions[category])} questions for category '{category}'")
 
         # After loading all questions, print the total count for verification
@@ -456,8 +456,8 @@ class JeopardyGame:
         if show_answer:
             self.question_display.config(text=f"Answer: {answer}")
             # Delay displaying the player list for, e.g., 3 seconds (3000 milliseconds)
-            self.root.after(2000, self.display_player_list)  # Adjust the time as needed
-            self.root.after(2000, self.reset_display)  # Ensure this still works as intended
+            self.root.after(1000, self.display_player_list)  # Adjust the time as needed
+            self.root.after(1000, self.reset_display)  # Ensure this still works as intended
         else:
             self.reset_display()
 
@@ -501,16 +501,10 @@ class JeopardyGame:
         tk.Label(settings_window, text="Thank you for playing my game! - Arlen Kirkaldie Jr", fg="blue").grid(row=3, column=0, columnspan=3, sticky="w")
 
     def browse_for_folder(self, entry_widget):
-        # Open a dialog to select a directory
         folder_selected = filedialog.askdirectory()
         if folder_selected:
-            # If a folder is selected, delete any existing content in the entry widget
             entry_widget.delete(0, tk.END)
-            # Insert the selected folder path into the entry widget
             entry_widget.insert(0, folder_selected)
-        # Note: There's no save operation or window closing action here.
-        # The user must explicitly click a "Save" button elsewhere in the UI to apply changes.
-
 
     def save_settings(self, answer_time, question_dir, settings_window):
         try:
