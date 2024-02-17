@@ -128,10 +128,26 @@ class JeopardyGame:
 
                 # Create and display the button with the resized photo
                 player_button = tk.Button(player_frame, image=photo_image, compound=tk.TOP, text=player_name,
-                                        command=lambda name=player_name: self.award_points_to_player(name))
+                                          command=lambda name=player_name: self.award_points_to_player(name))
                 player_button.pack(side=tk.LEFT, padx=10, pady=10)
             except Exception as e:
                 print(f"Error loading image for {player_name}: {e}")
+
+        # Add a "Next Question" button to allow continuing without awarding points
+        next_question_button = tk.Button(self.player_list_window, text="Next Question",
+                                         command=self.proceed_to_next_question)
+        next_question_button.pack(pady=20)
+
+    def proceed_to_next_question(self):
+        # This method will be called when the "Next Question" button is clicked
+        # Reset the display and prepare for the next question or check if the game is over
+        self.reset_display()  # Hide the question and answer display
+        self.player_list_window.destroy()  # Close the player list window
+
+        # Check if all questions have been answered to potentially end the game
+        self.check_game_over()
+
+
 
     def show_auto_close_messagebox(self, title, message, duration=1000):
         # Create a top-level window
@@ -456,8 +472,8 @@ class JeopardyGame:
         if show_answer:
             self.question_display.config(text=f"Answer: {answer}")
             # Delay displaying the player list for, e.g., 3 seconds (3000 milliseconds)
-            self.root.after(1000, self.display_player_list)  # Adjust the time as needed
-            self.root.after(1000, self.reset_display)  # Ensure this still works as intended
+            self.root.after(4000, self.display_player_list)  # Adjust the time as needed
+            self.root.after(4000, self.reset_display)  # Ensure this still works as intended
         else:
             self.reset_display()
 
