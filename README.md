@@ -1,6 +1,11 @@
 # jeopardy
 A jeopardy like game
 
+Feb 17, 2024 Update
+jeopardy_audio.py released
+This version features audio events such as announcing dollar amounts, winner announcement, incorrect response, etc.
+
+
 Feb 16, 2024 Update
 New version of jeopardy that allows for 1-4 players with names, photos and an interactive scoreboard.
 Game over screen declaring a winner now appears at the end of the game.
