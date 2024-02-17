@@ -174,24 +174,21 @@ class JeopardyGame:
         else:
             print(f"Answered: {len(self.answered_questions)}, Expected Total: {expected_total_questions}")
 
-
-
-
     def show_winner(self):
         # Find the highest scoring player
-        highest_score = max(self.player_scores.values())
+        highest_score = max(self.player_scores.values(), default=0)
         winners = [name for name, score in self.player_scores.items() if score == highest_score]
-        winner_name = winners[0]  # In case of a tie, show the first winner
+        winner_name = winners[0] if winners else 'No winner'  # Handle case with no winners
 
         winner_window = tk.Toplevel(self.root)
         winner_window.title("Game Over!")
-        winner_window.geometry("400x300")  # Adjust size as necessary
+        winner_window.geometry("800x600")  # Adjust size as necessary
 
         try:
             # Load and display the winner's photo
             photo_path = self.player_photos[winner_name]
             photo_image = Image.open(photo_path)
-            photo_image = photo_image.resize((150, 150), Image.Resampling.LANCZOS)  # Resize photo
+            photo_image = photo_image.resize((300, 300), Image.Resampling.LANCZOS)  # Resize photo
             photo_image = ImageTk.PhotoImage(photo_image)
 
             photo_label = tk.Label(winner_window, image=photo_image)
@@ -199,7 +196,7 @@ class JeopardyGame:
             photo_label.pack(pady=10)
 
             # Display the winner's name and score
-            winner_info = f"{winner_name} wins with a score of ${highest_score}!"
+            winner_info = f"{winner_name} wins with a score of ${highest_score}!" if winners else "No winner!"
             winner_label = tk.Label(winner_window, text=winner_info, font=("Helvetica", 16))
             winner_label.pack(pady=10)
 
@@ -208,6 +205,35 @@ class JeopardyGame:
             trophy_label.pack(pady=10)
         except Exception as e:
             print(f"Error displaying winner info: {e}")
+
+        # Add buttons for replay options
+        tk.Button(winner_window, text="Replay with new questions", command=self.replay_with_new_questions).pack(
+            pady=(20, 5))
+        tk.Button(winner_window, text="Replay with new players and questions",
+                  command=self.replay_with_new_players_and_questions).pack(pady=5)
+        tk.Button(winner_window, text="Quit", command=self.quit_game).pack(pady=(5, 20))
+
+    def replay_with_new_questions(self):
+        self.reset_game()
+        self.load_categories_and_questions()
+        self.start_game()
+
+    def replay_with_new_players_and_questions(self):
+        self.reset_game()
+        self.show_start_screen()
+
+    def reset_game(self):
+        # Clear data structures and UI elements to prepare for a new game
+        self.players = []
+        self.player_scores = {}
+        self.answered_questions.clear()
+        for widget in self.game_frame.winfo_children():
+            widget.destroy()
+        if self.scoreboard_window and tk.Toplevel.winfo_exists(self.scoreboard_window):
+            self.scoreboard_window.destroy()
+        self.game_in_progress = False
+    def quit_game(self):
+        self.root.quit()
 
 
     def award_points_to_player(self, player_name):
