@@ -55,9 +55,15 @@ class JeopardyGame:
         # Start with the player selection screen
         self.show_start_screen()
 
+        # Force GUI to update to show the loading message
+        self.root.update_idletasks()
+
         self.load_categories_and_questions()
+
+
         self.create_category_buttons()
         self.create_question_buttons()
+
 
         self.create_display_with_shadow()
         self.display_frame.place_forget()
@@ -128,7 +134,11 @@ class JeopardyGame:
         self.start_frame = tk.Frame(self.root)
         self.start_frame.pack(fill=tk.BOTH, expand=True)
 
-        tk.Label(self.start_frame, text="Select number of players (1-4):").pack()
+        # Display a loading message
+        self.loading_label = tk.Label(self.start_frame, text="Loading questions, please wait...", font=("Impact", 24))
+        self.loading_label.pack(pady=20)
+        
+        tk.Label(self.start_frame, text="Select number of players (1-4):", font=("Impact", 16)).pack()
         num_players = tk.IntVar(value=1)  # Default value
 
         def update_players(*args):
@@ -141,8 +151,11 @@ class JeopardyGame:
 
         tk.Button(self.start_frame, text="Next", command=lambda: self.enter_player_names(num_players.get())).pack()
 
+        
         # Play welcome sound
         self.play_sound('Welcome.mp3')
+
+        
 
 
     def enter_player_names(self, num_players):
@@ -187,6 +200,7 @@ class JeopardyGame:
     def display_player_list(self):
         self.player_list_window = tk.Toplevel(self.root)
         self.player_list_window.title("Select Player")
+        self.player_list_window.attributes('-topmost', True)
 
         player_frame = tk.Frame(self.player_list_window)
         player_frame.pack()
@@ -550,6 +564,12 @@ class JeopardyGame:
         total_questions = sum(len(questions) for questions in self.questions.values())
         print(f"Total questions loaded: {total_questions}")
 
+        # Destroy loading label once finished
+        if hasattr(self, 'loading_label'):
+            self.loading_label.destroy()
+        
+            
+
     def create_category_buttons(self):
         for col, category in enumerate(self.categories):
             category_label = os.path.splitext(category)[0]
@@ -675,6 +695,8 @@ class JeopardyGame:
     def open_settings(self, event=None):
         settings_window = tk.Toplevel(self.root)
         settings_window.title("Settings")
+        settings_window.attributes('-topmost', True)
+
 
         tk.Label(settings_window, text="Answer Time (seconds):").grid(row=0, column=0, sticky="w")
         answer_time_entry = tk.Entry(settings_window)
