@@ -78,7 +78,7 @@ class JeopardyGame:
 
     # Inactivity sounds play here
     def play_random_pick_sound(self):
-        pick_sounds = ['Pick01.mp3', 'Pick02.mp3', 'Pick03.mp3']
+        pick_sounds = ['Pick01.mp3', 'Pick02.mp3', 'Pick03.mp3', "LetsGetIntoThis.mp3"]
         selected_sound = random.choice(pick_sounds)
         self.play_sound(selected_sound)
         self.reset_inactivity_timer()  # Reset the inactivity timer each time a new question is displayed
@@ -220,7 +220,7 @@ class JeopardyGame:
         if len(self.answered_questions) == expected_total_questions:
             self.show_winner()
             print("The game is over")
-            pygame.mixer.stop()
+            self.inactivity_timer = None
 
         else:
             print(f"Answered: {len(self.answered_questions)}, Expected Total: {expected_total_questions}")
@@ -612,7 +612,7 @@ class JeopardyGame:
             print(f"Answer: {answer}")
             # Delay displaying the player list for, e.g., 3 seconds (3000 milliseconds)
             self.root.after(3000, self.display_player_list)  # Adjust the time as needed
-            self.root.after(4000, self.reset_display)  # Ensure this still works as intended
+            self.root.after(3000, self.reset_display)  # Ensure this still works as intended
         else:
             self.reset_display()
 
