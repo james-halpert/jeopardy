@@ -18,6 +18,7 @@ pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=4096)
 class JeopardyGame:
     def __init__(self, root):
         self.root = root
+        self.inactivity_timer = None
         self.root.title("Jeopardy Trivia Game")
         self.root.geometry("1000x800")
 
@@ -68,6 +69,19 @@ class JeopardyGame:
         self.root.bind("`", self.open_settings)
         self.root.bind("=", self.toggle_scoreboard)
         self.root.bind("-", lambda event: self.show_winner())  # Test hotkey to make sure the game over logic is working
+
+    # Add inactivity timer for player progression encouragement
+    def reset_inactivity_timer(self):
+        if self.inactivity_timer is not None:
+            self.root.after_cancel(self.inactivity_timer)
+        self.inactivity_timer = self.root.after(30000, self.play_random_pick_sound)
+
+    # Inactivity sounds play here
+    def play_random_pick_sound(self):
+        pick_sounds = ['Pick01.mp3', 'Pick02.mp3', 'Pick03.mp3']
+        selected_sound = random.choice(pick_sounds)
+        self.play_sound(selected_sound)
+        self.reset_inactivity_timer()  # Reset the inactivity timer each time a new question is displayed
 
     # Add play_sound method here, without changing the original comments
     def play_sound(self, filename):
@@ -206,6 +220,7 @@ class JeopardyGame:
         if len(self.answered_questions) == expected_total_questions:
             self.show_winner()
             print("The game is over")
+            pygame.mixer.stop()
 
         else:
             print(f"Answered: {len(self.answered_questions)}, Expected Total: {expected_total_questions}")
@@ -241,11 +256,11 @@ class JeopardyGame:
 
             # Display the winner's name and score
             winner_info = f"{winner_name} wins with a score of ${highest_score}!" if winners else "No winner!"
-            winner_label = tk.Label(winner_window, text=winner_info, font=("Helvetica", 16))
+            winner_label = tk.Label(winner_window, text=winner_info, font=("Impact", 16))
             winner_label.pack(pady=10)
 
             # Optionally, display a trophy image or message
-            trophy_label = tk.Label(winner_window, text="🏆", font=("Helvetica", 24))
+            trophy_label = tk.Label(winner_window, text="🏆", font=("Impact", 24))
             trophy_label.pack(pady=10)
         except Exception as e:
             print(f"Error displaying winner info: {e}")
@@ -394,7 +409,7 @@ class JeopardyGame:
                 photo_label.grid(row=index, column=0, padx=10, pady=5)
 
                 # Display player's name and score
-                score_label = tk.Label(scoreboard_frame, text=f"{player_name}: ${self.player_scores.get(player_name, 0)}", font=("Helvetica", 14))
+                score_label = tk.Label(scoreboard_frame, text=f"{player_name}: ${self.player_scores.get(player_name, 0)}", font=("Impact", 14))
                 score_label.grid(row=index, column=1, padx=10, pady=5)
             except Exception as e:
                 print(f"Error displaying info for {player_name}: {e}")
@@ -514,14 +529,13 @@ class JeopardyGame:
             label.pack(expand=True, fill=tk.BOTH)  # Fill the frame with the label
 
 
-
     def create_question_buttons(self):
         for col, category in enumerate(self.categories):
             self.question_buttons[category] = []
             for row, question_info in enumerate(self.questions[category]):
                 #print(question_info)  # Add this to see the problematic line
                 dollar_amount, question, answer = question_info
-                button = tk.Button(self.game_frame, text=f"${dollar_amount}", bg="blue", fg="white", height=3, width=20, command=lambda c=category, r=row: self.select_question(c, r),font=("Impact", 18, "bold"))
+                button = tk.Button(self.game_frame, text=f"${dollar_amount}", bg="blue", fg="white", height=3, width=20, command=lambda c=category, r=row: self.select_question(c, r),font=("Impact", 16, "bold"))
                 button.grid(row=row + 1, column=col, sticky="nsew")
                 self.question_buttons[category].append(button)
                 self.game_frame.grid_rowconfigure(row + 1, weight=1)
@@ -551,6 +565,8 @@ class JeopardyGame:
             '1200': 'LetsGetIntoThis.mp3',  # Example for $1200 question
         }
         sound_name = dollar_sound_map.get(dollar_amount)
+        self.reset_inactivity_timer()  # Reset the inactivity timer each time a new question is displayed
+        
         if sound_name:
             self.play_sound(sound_name)
 
@@ -558,6 +574,8 @@ class JeopardyGame:
         self.shadow_label.place(relx=0.505, rely=0.505, anchor="center", relwidth=0.81, relheight=0.31)
         self.display_frame.place(relx=0.5, rely=0.5, anchor="center", relwidth=0.8, relheight=0.3)
         self.question_display.config(text=question)
+        print(f"question: {question}")
+
         
 
         # Blank out the button text and disable it
@@ -586,12 +604,14 @@ class JeopardyGame:
             self.root.after(100, self.update_progress_bar, steps_remaining - 1)
 
     def display_answer(self, show_answer=False):
+        self.reset_inactivity_timer()  # Reset the inactivity timer each time a new question is displayed
         category, row = self.selected_question
         _, _, answer = self.questions[category][row]
         if show_answer:
             self.question_display.config(text=f"Answer: {answer}")
+            print(f"Answer: {answer}")
             # Delay displaying the player list for, e.g., 3 seconds (3000 milliseconds)
-            self.root.after(4000, self.display_player_list)  # Adjust the time as needed
+            self.root.after(3000, self.display_player_list)  # Adjust the time as needed
             self.root.after(4000, self.reset_display)  # Ensure this still works as intended
         else:
             self.reset_display()
@@ -651,11 +671,13 @@ class JeopardyGame:
 
             self.save_settings_to_file()
             settings_window.destroy()
-            messagebox.showinfo("Settings Saved", "Your settings have been saved successfully. The program will now restart.")
-
-            # Restart the program
-            python = sys.executable
-            os.execl(python, python, *sys.argv)
+            messagebox.showinfo("Settings Saved", "Your settings have been saved successfully.")
+            
+            # Instead of restarting the entire program, reset the game to apply the new settings
+            self.reset_game(keep_players=True)
+            self.load_categories_and_questions()
+            self.start_game()
+            
         except ValueError as e:
             messagebox.showerror("Error", str(e))
 
