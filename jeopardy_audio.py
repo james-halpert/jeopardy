@@ -580,7 +580,7 @@ class JeopardyGame:
             self.game_frame.grid_columnconfigure(col, weight=1)
             
             # Place a label inside the frame
-            label = tk.Label(frame, text=category_label, bg="blue", fg="white", wraplength=140, height=3, width=20, font=("Impact", 12, "bold"))
+            label = tk.Label(frame, text=category_label, bg="blue", fg="white", wraplength=150, height=3, width=20, font=("Impact", 12, "bold"))
             label.pack(expand=True, fill=tk.BOTH)  # Fill the frame with the label
 
 
