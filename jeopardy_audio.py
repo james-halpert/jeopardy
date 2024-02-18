@@ -210,6 +210,9 @@ class JeopardyGame:
             print(f"Answered: {len(self.answered_questions)}, Expected Total: {expected_total_questions}")
 
     def show_winner(self):
+        # Stop all other sounds from playing
+        pygame.mixer.stop()
+        
         # Find the highest scoring player
         highest_score = max(self.player_scores.values(), default=0)
         winners = [name for name, score in self.player_scores.items() if score == highest_score]
