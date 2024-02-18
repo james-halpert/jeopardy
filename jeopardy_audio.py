@@ -105,25 +105,38 @@ class JeopardyGame:
 
         self.player_name_entries = []
         self.player_photo_buttons = []
-        self.player_photos = {}  # This will map player names to their photo paths
+        self.player_photo_labels = []  # New list to keep references to the photo labels
+        self.player_photos = {}  # This will map player index to their photo paths
 
         for i in range(num_players):
-            tk.Label(self.names_frame, text=f"Player {i+1} Name:").pack(side=tk.TOP, fill=tk.X)
-            name_entry = tk.Entry(self.names_frame)
-            name_entry.pack(side=tk.TOP, fill=tk.X)
+            player_frame = tk.Frame(self.names_frame)
+            player_frame.pack(side=tk.TOP, fill=tk.X, pady=5)
+
+            # Default photo for preview
+            default_photo_path = os.path.join(".", "avatar.png")  # Update path as necessary
+            default_photo = Image.open(default_photo_path)
+            default_photo_resized = default_photo.resize((150, 150), Image.Resampling.LANCZOS)
+            default_photo_image = ImageTk.PhotoImage(default_photo_resized)
+            photo_label = tk.Label(player_frame, image=default_photo_image)
+            photo_label.image = default_photo_image  # Keep a reference!
+            photo_label.pack(side=tk.LEFT, padx=10)
+            self.player_photo_labels.append(photo_label)
+
+            tk.Label(player_frame, text=f"Player {i+1} Name:").pack(side=tk.LEFT)
+            name_entry = tk.Entry(player_frame)
+            name_entry.pack(side=tk.LEFT, padx=10)
             self.player_name_entries.append(name_entry)
 
-            # Initialize all players with a default photo path
-            self.player_photos[i] = "avatar.png"  # Replace with the actual path to your default avatar
+            self.player_photos[i] = default_photo_path  # Initialize with the default photo path
 
-            # Create a "Choose Photo" button for each player
-            photo_button = tk.Button(self.names_frame, text="Choose Photo",
-                                    command=lambda i=i: self.select_player_photo(i))
-            photo_button.pack(side=tk.TOP, fill=tk.X)
+            photo_button = tk.Button(player_frame, text="Choose Photo",
+                                     command=lambda i=i: self.select_player_photo(i))
+            photo_button.pack(side=tk.LEFT)
             self.player_photo_buttons.append(photo_button)
 
-        tk.Button(self.names_frame, text="Start Game", command=self.finalize_players).pack(side=tk.BOTTOM)
+        tk.Button(self.names_frame, text="Start Game", command=self.finalize_players).pack(side=tk.BOTTOM, pady=10)
 
+    
     def display_player_list(self):
         self.player_list_window = tk.Toplevel(self.root)
         self.player_list_window.title("Select Player")
@@ -325,19 +338,24 @@ class JeopardyGame:
 
 
 
-
     def select_player_photo(self, player_index):
-        # Open file dialog to select photo for the player
+        # Open file dialog to select a photo
         photo_path = filedialog.askopenfilename(
             title="Select Player Photo",
-            filetypes=[("PNG Files", "*.png")]
-        )
-        print("slected photo path:", photo_path)
+            filetypes=[("PNG files", "*.png"), ("PNG files (uppercase)", "*.PNG")])  # Adjusted filetypes option
 
         if photo_path:
             self.player_photos[player_index] = photo_path
+            # Update photo preview
+            photo = Image.open(photo_path)
+            photo_resized = photo.resize((150, 150), Image.Resampling.LANCZOS)
+            photo_image = ImageTk.PhotoImage(photo_resized)
+            self.player_photo_labels[player_index].configure(image=photo_image)
+            self.player_photo_labels[player_index].image = photo_image  # Keep a reference!
         else:
             pass
+
+        
     def toggle_scoreboard(self, event=None):
         if self.scoreboard_window is not None:
             if self.scoreboard_window.state() == "normal":
@@ -413,7 +431,7 @@ class JeopardyGame:
             widget.destroy()
 
         # Initialize game components that depend on player setup being complete
-        self.load_categories_and_questions()
+        #self.load_categories_and_questions()
 
         # Instead of self.root, use self.game_frame for game UI components
         self.create_category_buttons()
@@ -493,7 +511,7 @@ class JeopardyGame:
         for col, category in enumerate(self.categories):
             self.question_buttons[category] = []
             for row, question_info in enumerate(self.questions[category]):
-                # print(question_info)  # Add this to see the problematic line
+                #print(question_info)  # Add this to see the problematic line
                 dollar_amount, question, answer = question_info
                 button = tk.Button(self.game_frame, text=f"${dollar_amount}", bg="blue", fg="white", height=3, width=20, command=lambda c=category, r=row: self.select_question(c, r))
                 button.grid(row=row + 1, column=col, sticky="nsew")
