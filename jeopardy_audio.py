@@ -503,10 +503,17 @@ class JeopardyGame:
     def create_category_buttons(self):
         for col, category in enumerate(self.categories):
             category_label = os.path.splitext(category)[0]
-            button = tk.Button(self.game_frame, text=category_label, bg="blue", fg="white", state=tk.DISABLED, wraplength=110, height=3, width=20,font=("Helvetica", 12, "bold"))
-            button.grid(row=0, column=col, sticky="nsew")
-            self.category_buttons.append(button)
+            
+            # Create a frame for each category label with a white border
+            frame = tk.Frame(self.game_frame, bg="white", bd=2, relief="solid")
+            frame.grid(row=0, column=col, sticky="nsew", padx=1, pady=1)  # Use padx and pady to create spacing between frames
             self.game_frame.grid_columnconfigure(col, weight=1)
+            
+            # Place a label inside the frame
+            label = tk.Label(frame, text=category_label, bg="blue", fg="white", wraplength=140, height=3, width=20, font=("Impact", 12, "bold"))
+            label.pack(expand=True, fill=tk.BOTH)  # Fill the frame with the label
+
+
 
     def create_question_buttons(self):
         for col, category in enumerate(self.categories):
@@ -514,7 +521,7 @@ class JeopardyGame:
             for row, question_info in enumerate(self.questions[category]):
                 #print(question_info)  # Add this to see the problematic line
                 dollar_amount, question, answer = question_info
-                button = tk.Button(self.game_frame, text=f"${dollar_amount}", bg="blue", fg="white", height=3, width=20, command=lambda c=category, r=row: self.select_question(c, r),font=("Helvetica", 14))
+                button = tk.Button(self.game_frame, text=f"${dollar_amount}", bg="blue", fg="white", height=3, width=20, command=lambda c=category, r=row: self.select_question(c, r),font=("Impact", 18, "bold"))
                 button.grid(row=row + 1, column=col, sticky="nsew")
                 self.question_buttons[category].append(button)
                 self.game_frame.grid_rowconfigure(row + 1, weight=1)
