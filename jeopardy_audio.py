@@ -69,6 +69,30 @@ class JeopardyGame:
         self.root.bind("`", self.open_settings)
         self.root.bind("=", self.toggle_scoreboard)
         self.root.bind("-", lambda event: self.show_winner())  # Test hotkey to make sure the game over logic is working
+        self.root.bind("!", self.debug_advance_to_last_question)  # Bind Shift+1 (represented as "!")
+    
+    def debug_advance_to_last_question(self, event=None):
+        # Caution: This is for debugging purposes and might need adjustment based on your game's data structures
+        if not self.game_in_progress:
+            print("Game not in progress. Debug action ignored.")
+            return
+        
+        total_categories = len(self.questions)
+        total_questions_per_category = {category: len(self.questions[category]) for category in self.questions}
+
+        # Mark all but one question as answered
+        for category, questions in self.questions.items():
+            for i in range(len(questions) - 1):  # Leave one question unanswered
+                self.answered_questions.add((category, i))
+
+        # Update UI to reflect the changes (optional, depending on how your UI is set up)
+        for category, buttons in self.question_buttons.items():
+            for i, button in enumerate(buttons):
+                if (category, i) in self.answered_questions:
+                    button.config(state="disabled", text="")  # Update button state and text to show it's answered
+        
+        print("Debug: Advanced to the last question.")
+
 
     # Add inactivity timer for player progression encouragement
     def reset_inactivity_timer(self):
@@ -78,9 +102,18 @@ class JeopardyGame:
 
     # Inactivity sounds play here
     def play_random_pick_sound(self):
+        if not self.game_in_progress:
+            # Game is over, do not play any sound and cancel any pending inactivity timer
+            if self.inactivity_timer is not None:
+                self.root.after_cancel(self.inactivity_timer)
+                self.inactivity_timer = None
+            return  # Exit the method if the game is not in progress
+
         pick_sounds = ['Pick01.mp3', 'Pick02.mp3', 'Pick03.mp3', "LetsGetIntoThis.mp3"]
         selected_sound = random.choice(pick_sounds)
         self.play_sound(selected_sound)
+
+        # Consider whether you want to reset the timer here as it might lead to continuous play if no interaction occurs
         self.reset_inactivity_timer()  # Reset the inactivity timer each time a new question is displayed
 
     # Add play_sound method here, without changing the original comments
@@ -226,6 +259,7 @@ class JeopardyGame:
             print(f"Answered: {len(self.answered_questions)}, Expected Total: {expected_total_questions}")
 
     def show_winner(self):
+        self.game_in_progress = False
         # Stop all other sounds from playing
         pygame.mixer.stop()
 
@@ -440,6 +474,7 @@ class JeopardyGame:
 
 
     def start_game(self):
+        self.game_in_progress = True
         # Now that player setup is complete, we prepare the game UI within the game_frame
 
         # Ensure any previous game UI components are cleared
