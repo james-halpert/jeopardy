@@ -164,10 +164,10 @@ class JeopardyGame:
             except Exception as e:
                 print(f"Error loading image for {player_name}: {e}")
 
-        # Add a "Next Question" button to allow continuing without awarding points
+        # Add a "Wrong Answer - Next Question" button to allow continuing without awarding points
         incorrect_sounds = ['Incorrect_01.mp3', 'Incorrect_02.mp3', 'Incorrect_03.mp3']
         incorrect_sound_name = random.choice(incorrect_sounds)
-        next_question_button = tk.Button(self.player_list_window, text="Next Question",
+        next_question_button = tk.Button(self.player_list_window, text="Wrong Answer - Next Question",
                                         command=lambda: [self.play_sound(incorrect_sound_name), self.proceed_to_next_question()])
         
         next_question_button.pack(pady=20)
@@ -206,13 +206,15 @@ class JeopardyGame:
         if len(self.answered_questions) == expected_total_questions:
             self.show_winner()
             print("The game is over")
+            pygame.mixer.stop()
+
         else:
             print(f"Answered: {len(self.answered_questions)}, Expected Total: {expected_total_questions}")
 
     def show_winner(self):
         # Stop all other sounds from playing
         pygame.mixer.stop()
-        
+
         # Find the highest scoring player
         highest_score = max(self.player_scores.values(), default=0)
         winners = [name for name, score in self.player_scores.items() if score == highest_score]
@@ -315,19 +317,16 @@ class JeopardyGame:
             self.player_scores[player_name] += points_to_award
             # old message box - messagebox.showinfo("Points Awarded", f"{player_name} has been awarded ${points_to_award}.")
             self.show_auto_close_messagebox("Points Awarded", f"{player_name} has been awarded ${points_to_award}.", 1000)
+            # Play a random correct sound
+            correct_sounds = ['Correct_01.mp3', 'Correct_02.mp3', 'Correct_03.mp3', 'Correct_04.mp3']
+            sound_name = random.choice(correct_sounds)
+            self.play_sound(sound_name)
             self.check_game_over()
             self.display_player_info()  # Update the scoreboard
             self.player_list_window.destroy()  # Close the award window
         else:
             messagebox.showerror("Error", "Player name not found. Please enter a valid player name.")
-        # Play a random correct sound
-        correct_sounds = ['Correct_01.mp3', 'Correct_02.mp3', 'Correct_03.mp3', 'Correct_04.mp3']
-        sound_name = random.choice(correct_sounds)
-        self.play_sound(sound_name)
         
-
-
-
 
 
 
