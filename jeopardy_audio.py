@@ -206,7 +206,6 @@ class JeopardyGame:
         if len(self.answered_questions) == expected_total_questions:
             self.show_winner()
             print("The game is over")
-            pygame.mixer.stop()
 
         else:
             print(f"Answered: {len(self.answered_questions)}, Expected Total: {expected_total_questions}")
