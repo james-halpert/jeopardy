@@ -5,6 +5,7 @@ Feb 18, 2024 Update
 Question processing system rebuilt to use 43,488 Categories (21,765 Standard Jeopardy - 21,723 Double Jeopardy) bringing the total number of questions up to 217,440.
 The processing tool is now included in the tools folder as well for future updates with JSON datasets.
 If a category name has been used repeatedly, the tool will take the extra questions after the initial 5 and create a duplicate category with a -n variable in the category name and append the next 5 questions with sequential dollar values.
+This can be accessed with the Sanitized_Questions.zip
 
 Feb 17, 2024 Update
 jeopardy_audio.py released
