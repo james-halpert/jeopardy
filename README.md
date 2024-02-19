@@ -10,6 +10,14 @@ This can be accessed with the Sanitized_Questions.zip
 UI Update to Player Input Screen
 ![image](https://github.com/james-halpert/jeopardy/assets/35898814/3509b14d-9331-43c6-8baf-f87546b8c577)
 
+UI and Scoreboard updated for better visibility
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/12f510fc-8374-4b60-9e24-89bffdad2190)
+
+After the question and answers are shown, the players specify who was the first to answer correctly (or "Wrong Answer - Next Question" if everyone missed it)
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/a1d0858f-d52f-4eee-ad76-cbc37d75542c)
+
+Players can now start a new game with various options after finishing a round
+![image](https://github.com/james-halpert/jeopardy/assets/35898814/9fba807c-03af-4ec4-84a4-34f6bcb1b413)
 
 
 Feb 17, 2024 Update
